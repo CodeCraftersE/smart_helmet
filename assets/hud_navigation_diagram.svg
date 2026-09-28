@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 310" width="100%" height="auto" style="border-radius: 8px; background: #080d1a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <linearGradient id="hudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <marker id="nav-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <!-- Title Banner -->
+  <text x="470" y="24" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" letter-spacing="1">REAL-TIME WEB HUD &amp; GPS TURN-BY-TURN NAVIGATION SYSTEM</text>
+
+  <!-- Panel 1: Browser Leaflet Map HUD -->
+  <g transform="translate(25, 38)">
+    <rect width="280" height="230" rx="8" fill="url(#hudGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect width="280" height="28" rx="8" fill="#1e293b"/>
+    <circle cx="16" cy="14" r="4" fill="#ef4444"/>
+    <circle cx="28" cy="14" r="4" fill="#f59e0b"/>
+    <circle cx="40" cy="14" r="4" fill="#10b981"/>
+    <text x="140" y="18" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">Web HUD: Leaflet.js GPS Map</text>
+
+    <!-- Simulated Map Grid & Route -->
+    <rect x="15" y="40" width="250" height="110" rx="6" fill="#0f172a" stroke="#334155"/>
+    <path d="M 30 130 Q 80 80 140 100 T 240 60" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+    <!-- Rider pin -->
+    <circle cx="140" cy="100" r="7" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+    <!-- Destination pin -->
+    <circle cx="240" cy="60" r="7" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
+
+    <!-- Map Overlay HUD data -->
+    <rect x="25" y="48" width="105" height="34" rx="4" fill="#0b1329" fill-opacity="0.85" stroke="#1e293b"/>
+    <text x="32" y="60" fill="#38bdf8" font-size="8" font-weight="700">RIDER COORD</text>
+    <text x="32" y="73" fill="#e2e8f0" font-size="7.5">22.5726° N, 88.3639° E</text>
+
+    <!-- Destination Search & Action -->
+    <rect x="15" y="160" width="180" height="24" rx="4" fill="#1e293b" stroke="#475569"/>
+    <text x="24" y="176" fill="#94a3b8" font-size="8">🔍 Search: "Howrah Bridge, Kolkata"</text>
+    <rect x="202" y="160" width="63" height="24" rx="4" fill="#0284c7"/>
+    <text x="233" y="176" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="700">NAVIGATE</text>
+
+    <text x="15" y="202" fill="#cbd5e1" font-size="7.5">• Click map or search address (Nominatim)</text>
+    <text x="15" y="215" fill="#34d399" font-size="7.5">✓ Sends 'DEST:lat,lon' over USB Serial to Uno</text>
+  </g>
+
+  <!-- Flow Arrow: Web HUD -> Arduino Nav Engine -->
+  <g transform="translate(310, 140)">
+    <line x1="0" y1="0" x2="45" y2="0" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#nav-arrow)"/>
+    <text x="22" y="-8" text-anchor="middle" fill="#38bdf8" font-size="7.5" font-weight="700">DEST:lat,lon</text>
+  </g>
+
+  <!-- Panel 2: Arduino Uno Navigation Engine -->
+  <g transform="translate(365, 38)">
+    <rect width="265" height="230" rx="8" fill="url(#hudGrad)" stroke="#6366f1" stroke-width="1.5"/>
+    <rect width="265" height="28" rx="8" fill="#1e293b"/>
+    <text x="132" y="18" text-anchor="middle" fill="#a5b4fc" font-size="9" font-weight="700">Arduino Uno: TinyGPS++ Engine</text>
+
+    <rect x="15" y="40" width="235" height="48" rx="5" fill="#0f172a" stroke="#334155"/>
+    <text x="24" y="55" fill="#818cf8" font-size="8.5" font-weight="700">1. Haversine Distance &amp; Course</text>
+    <text x="24" y="68" fill="#cbd5e1" font-size="7.5">d = distanceBetween(lat1, lon1, lat2, lon2)</text>
+    <text x="24" y="80" fill="#cbd5e1" font-size="7.5">bearing = courseTo(lat1, lon1, lat2, lon2)</text>
+
+    <rect x="15" y="96" width="235" height="66" rx="5" fill="#0f172a" stroke="#334155"/>
+    <text x="24" y="111" fill="#818cf8" font-size="8.5" font-weight="700">2. Delta Heading Classification</text>
+    <text x="24" y="125" fill="#cbd5e1" font-size="7.5">|Δθ| ≤ 25°  → Straight Ahead (↑)</text>
+    <text x="24" y="137" fill="#cbd5e1" font-size="7.5">+25° to +150° → Turn Right (→)</text>
+    <text x="24" y="149" fill="#cbd5e1" font-size="7.5">-25° to -150° → Turn Left (←) | &gt;150° → U-Turn</text>
+
+    <rect x="15" y="170" width="235" height="48" rx="5" fill="#0f172a" stroke="#334155"/>
+    <text x="24" y="185" fill="#34d399" font-size="8.5" font-weight="700">3. Arrival Trigger (&lt; 20 meters)</text>
+    <text x="24" y="198" fill="#cbd5e1" font-size="7.5">Displays checkered flag &amp; plays MP3 Track 4</text>
+    <text x="24" y="210" fill="#a7f3d0" font-size="7.5">"You have arrived at your destination"</text>
+  </g>
+
+  <!-- Flow Arrow: Engine -> Actuators -->
+  <g transform="translate(635, 140)">
+    <line x1="0" y1="0" x2="45" y2="0" stroke="#10b981" stroke-width="2.5" marker-end="url(#nav-arrow)"/>
+    <text x="22" y="-8" text-anchor="middle" fill="#10b981" font-size="7.5" font-weight="700">HUD &amp; Voice</text>
+  </g>
+
+  <!-- Panel 3: Rider Physical HUD & Voice Actuation -->
+  <g transform="translate(690, 38)">
+    <rect width="225" height="230" rx="8" fill="url(#hudGrad)" stroke="#10b981" stroke-width="1.5"/>
+    <rect width="225" height="28" rx="8" fill="#1e293b"/>
+    <text x="112" y="18" text-anchor="middle" fill="#6ee7b7" font-size="9" font-weight="700">Rider Helmet HUD &amp; Voice</text>
+
+    <!-- MAX7219 Visual Arrow Glyphs -->
+    <rect x="15" y="38" width="195" height="100" rx="5" fill="#0f172a" stroke="#334155"/>
+    <text x="22" y="52" fill="#38bdf8" font-size="8" font-weight="700">8x8 LED Matrix Visor Arrows</text>
+
+    <!-- Straight Arrow Icon Box -->
+    <rect x="22" y="58" width="32" height="32" rx="3" fill="#1e293b" stroke="#38bdf8"/>
+    <text x="38" y="80" text-anchor="middle" fill="#38bdf8" font-size="16">↑</text>
+    <text x="38" y="97" text-anchor="middle" fill="#94a3b8" font-size="6">Straight</text>
+
+    <!-- Turn Right Icon Box -->
+    <rect x="62" y="58" width="32" height="32" rx="3" fill="#1e293b" stroke="#38bdf8"/>
+    <text x="78" y="80" text-anchor="middle" fill="#38bdf8" font-size="16">→</text>
+    <text x="78" y="97" text-anchor="middle" fill="#94a3b8" font-size="6">Right</text>
+
+    <!-- Turn Left Icon Box -->
+    <rect x="102" y="58" width="32" height="32" rx="3" fill="#1e293b" stroke="#38bdf8"/>
+    <text x="118" y="80" text-anchor="middle" fill="#38bdf8" font-size="16">←</text>
+    <text x="118" y="97" text-anchor="middle" fill="#94a3b8" font-size="6">Left</text>
+
+    <!-- Flag Icon Box -->
+    <rect x="142" y="58" width="32" height="32" rx="3" fill="#1e293b" stroke="#10b981"/>
+    <text x="158" y="80" text-anchor="middle" fill="#10b981" font-size="14">🏁</text>
+    <text x="158" y="97" text-anchor="middle" fill="#a7f3d0" font-size="6">Arrived</text>
+
+    <!-- Priority Display System Rule -->
+    <rect x="15" y="146" width="195" height="74" rx="5" fill="#0f172a" stroke="#f59e0b"/>
+    <text x="22" y="160" fill="#fbbf24" font-size="8" font-weight="700">Display Priority Hierarchy:</text>
+    <text x="22" y="173" fill="#f87171" font-size="7">1. FATIGUED (Flashing 'X') [Top]</text>
+    <text x="22" y="184" fill="#fbbf24" font-size="7">2. DROWSY (Half-Closed Eye)</text>
+    <text x="22" y="195" fill="#a855f7" font-size="7">3. Air / Radar Obstacle Warning</text>
+    <text x="22" y="206" fill="#34d399" font-size="7">4. GPS Turn Arrows (Normal Alert Mode)</text>
+  </g>
+
+  <!-- Embedded Caption -->
+  <text x="470" y="295" text-anchor="middle" fill="#94a3b8" font-size="8.5" font-style="italic">Figure 3: Interactive Web HUD Leaflet Map, Geocoding Destination Dispatch, and Microcontroller Turn-by-Turn HUD Actuation.</text>
+</svg>

@@ -1,0 +1,17 @@
+[
+  "ax",
+  "ay",
+  "az",
+  "gx",
+  "gy",
+  "gz",
+  "tilt_angle",
+  "acc_magnitude",
+  "gyro_magnitude",
+  "pm1",
+  "pm25",
+  "pm4",
+  "pm10",
+  "pm25_change",
+  "pm10_change"
+]
